@@ -7,9 +7,6 @@ A simple and lightweight wrapper around AVQueuePlayer with the aim of making aud
 
 
 # Basic Usage
-
-
-
 ```
 // Import library
 import AMMediaPlayer
@@ -31,3 +28,6 @@ do {
 AMMediaPlayer.shared.play()
 
 ```
+
+# License
+AMMediaPlayer is available under the MIT license. See the LICENSE file for more info.
