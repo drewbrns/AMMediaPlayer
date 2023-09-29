@@ -1,6 +1,6 @@
 # AMMediaPlayer
 
-A simple and lightweight wrapper around AVQueuePlayer with the aim of audio streaming simple and decoupled from your main code
+A simple and lightweight wrapper around AVQueuePlayer with the aim of making audio streaming simple and decoupled from your main code
 
 # Installation
 
