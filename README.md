@@ -8,9 +8,10 @@ A simple and lightweight wrapper around AVQueuePlayer with the aim of audio stre
 
 # Basic Usage
 
-import AMMediaPlayer
+
 
 ```
+import AMMediaPlayer
 
 let urlAssets = [
     AVURLAsset(url: audioUrl, options: nil) // audioUrl can be a local url or a remote url
