@@ -3,8 +3,7 @@
 A simple and lightweight wrapper around AVQueuePlayer with the aim of making audio streaming simple and decoupled from your main code
 
 # Installation
-
-
+AMMediaPlayer can be installed via [Swift Package Manager](https://www.swift.org/package-manager/). 
 
 # Basic Usage
 ```
@@ -28,6 +27,9 @@ do {
 AMMediaPlayer.shared.play()
 
 ```
+
+# Minimum Requirements
+iOS 13
 
 # License
 AMMediaPlayer is available under the MIT license. See the LICENSE file for more info.
