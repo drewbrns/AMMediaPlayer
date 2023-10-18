@@ -17,7 +17,7 @@ public final class AMMediaPlayer: Player {
         case waitingToPlay
         case playing
         case paused
-        case itemChanged
+        case itemChanged(AVPlayerItem?)
         case stopped
     }
 
@@ -63,7 +63,11 @@ public final class AMMediaPlayer: Player {
     }
 
     public var isReady: Bool {
-        status == .ready
+        if case .ready = status {
+            return true
+        } else {
+            return false
+        }
     }
 
     public var isPlaying: Bool {
@@ -144,6 +148,30 @@ extension AMMediaPlayer {
             }
         } catch is CancellationError {
             resetAndTerminatePlayer()
+        }
+    }
+}
+
+extension AMMediaPlayer.PlaybackStatus: Equatable {
+
+    public static func ==(lhs: AMMediaPlayer.PlaybackStatus, rhs: AMMediaPlayer.PlaybackStatus) -> Bool {
+        switch (lhs, rhs) {
+        case (.ready, .ready):
+            return true
+        case (.buffering, .buffering):
+            return true
+        case (.waitingToPlay, .waitingToPlay):
+            return true
+        case (.playing, .playing):
+            return true
+        case (.paused, .paused):
+            return true
+        case (.itemChanged(let playerItem1), .itemChanged(let playerItem2)):
+            return playerItem1 == playerItem2
+        case (.stopped, .stopped):
+            return true
+        default:
+            return false
         }
     }
 }
