@@ -11,11 +11,12 @@ extension AMMediaPlayer {
 
         player?
             .publisher(for: \.currentItem, options: [.new])
-            .sink { [weak self] _ in
+            .sink { [weak self] newItem in
+
                 guard let self else { return }
                 guard let player = self.player else { return }
 
-                self.status = .itemChanged
+                self.status = .itemChanged(newItem)
                 guard player.items().isEmpty && player.currentItem == nil else {
                     return }
                 player.removeAllItems()
