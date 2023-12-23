@@ -28,6 +28,18 @@ extension AMMediaPlayer {
         player?.advanceToNextItem()
     }
 
+    public func skipToItem(at index: Int) async {
+
+        guard playerItems.count > index else { return }
+
+        pause()
+
+        let newItems = Array(playerItems[index...])
+        reloadPlayer(with: newItems)
+
+        play()
+    }
+
     public func seek(to seconds: Int) async {
         let targetTime = CMTimeMake(value: Int64(seconds), timescale: 1)
         await stopPlayingAndSeekSmoothlyToTime(newChaseTime: targetTime)

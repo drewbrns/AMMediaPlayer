@@ -16,12 +16,14 @@ public protocol Player {
     var status: AMMediaPlayer.PlaybackStatus { get set }
 
     func enqueue(urlAssets: [AVURLAsset], startPlayingAutomatically: Bool) async throws
+    func reloadPlayer()
 
     func play()
     func pause()
     func togglePlayback()
 
     func skipToNext()
+    func skipToItem(at index: Int) async
     func seek(to seconds: Int) async
     func rev(seek: Int) async
     func skip(seek: Int) async
