@@ -13,21 +13,7 @@ extension AMMediaPlayer {
             .publisher(for: \.currentItem, options: [.new])
             .sink { [weak self] newItem in
 
-                guard let self else { return }
-                guard let player = self.player else { return }
-
-                self.status = .itemChanged(newItem)
-                guard player.items().isEmpty && player.currentItem == nil else {
-                    return }
-                player.removeAllItems()
-                player.replaceCurrentItem(with: nil)
-
-                for item in self.playerItems {
-                    item.seek(to: .zero, completionHandler: nil)
-                    player.insert(item, after: nil)
-                }
-
-                self.pause()
+                self?.status = .itemChanged(newItem)
             }
             .store(in: &cancellables)
 
@@ -77,17 +63,19 @@ extension AMMediaPlayer {
             case .playing:
                 self?.status = .playing
             case .waitingToPlayAtSpecifiedRate:
-                if let status = self?.player?.reasonForWaitingToPlay {
-                    switch status {
-                    case .noItemToPlay:
-                        self?.status = .stopped
-                    case .toMinimizeStalls:
-                        self?.status = .waitingToPlay
-                    case .evaluatingBufferingRate:
-                        break
-                    default:
-                        break
-                    }
+                guard let status = self?.player?.reasonForWaitingToPlay else {
+                    return
+                }
+
+                switch status {
+                case .noItemToPlay:
+                    self?.status = .stopped
+                case .toMinimizeStalls:
+                    self?.status = .waitingToPlay
+                case .evaluatingBufferingRate:
+                    break
+                default:
+                    break
                 }
             default:
                 break

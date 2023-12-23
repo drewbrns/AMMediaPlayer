@@ -150,6 +150,30 @@ extension AMMediaPlayer {
             resetAndTerminatePlayer()
         }
     }
+
+    func reloadPlayer(with items: [AVPlayerItem]) {
+        guard let player else { return }
+
+        player.removeAllItems()
+        player.replaceCurrentItem(with: nil)
+
+        for (_, item) in items.enumerated() {
+            item.seek(to: .zero, completionHandler: nil)
+            player.insert(item, after: nil)
+        }
+    }
+
+    public func reloadPlayer() {
+        guard let player else { return }
+
+        guard player.items().isEmpty &&
+                player.currentItem == nil else {
+            return
+        }
+
+        reloadPlayer(with: playerItems)
+        pause()
+    }
 }
 
 extension AMMediaPlayer.PlaybackStatus: Equatable {
