@@ -10,10 +10,13 @@ extension AMMediaPlayer {
     func setupObservers() {
 
         player?
-            .publisher(for: \.currentItem, options: [.new])
+            .publisher(for: \.currentItem)
             .sink { [weak self] newItem in
-
                 self?.status = .itemChanged(newItem)
+
+                if let duration = self?.duration {
+                    self?.durationSubject.send(duration)
+                }
             }
             .store(in: &cancellables)
 

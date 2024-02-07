@@ -75,12 +75,6 @@ extension AMMediaPlayer {
     }
 
     private func stopPlayingAndSeekSmoothlyToTime(newChaseTime: CMTime) async {
-        if isSeekInProgress {
-            player?.pause()
-        } else {
-            player?.play()
-        }
-
         if CMTimeCompare(newChaseTime, chaseTime) != 0 {
             chaseTime = newChaseTime
             if isSeekInProgress.not {
