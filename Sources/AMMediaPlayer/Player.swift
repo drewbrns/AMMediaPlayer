@@ -16,6 +16,7 @@ public protocol Player {
     var status: AMMediaPlayer.PlaybackStatus { get set }
 
     func enqueue(urlAssets: [AVURLAsset], startPlayingAutomatically: Bool) async throws
+    func reEnqueue(urlAssets: [AVURLAsset]) async throws
     func reloadPlayer()
 
     func play()

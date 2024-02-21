@@ -119,6 +119,15 @@ extension AMMediaPlayer {
         removePeriodicTimeObserver()
     }
 
+    private func setupPlayer(with playerItems: [AVPlayerItem]) {
+        player = AVQueuePlayer(items: playerItems)
+        player?.automaticallyWaitsToMinimizeStalling = true
+
+        setupObservers()
+        addPeriodicTimeObserver()
+        durationSubject.send(duration)
+    }
+
     private func loadAssets(assets: [AVURLAsset]) async throws -> [AVPlayerItem] {
         var playerItems: [AVPlayerItem] = []
 
@@ -136,16 +145,25 @@ extension AMMediaPlayer {
             playerItems = try await loadAssets(assets: urlAssets)
             guard playerItems.isEmpty.not else { return }
 
-            player = AVQueuePlayer(items: playerItems)
-            player?.automaticallyWaitsToMinimizeStalling = true
-
-            setupObservers()
-            addPeriodicTimeObserver()
-            durationSubject.send(duration)
+            setupPlayer(with: playerItems)
 
             if startPlayingAutomatically {
                 player?.play()
             }
+        } catch is CancellationError {
+            resetAndTerminatePlayer()
+        }
+    }
+
+    public func reEnqueue(urlAssets: [AVURLAsset]) async throws {
+        do {
+            pause()
+            resetAndTerminatePlayer()
+
+            playerItems = try await loadAssets(assets: urlAssets)
+            guard playerItems.isEmpty.not else { return }
+
+            setupPlayer(with: playerItems)
         } catch is CancellationError {
             resetAndTerminatePlayer()
         }
